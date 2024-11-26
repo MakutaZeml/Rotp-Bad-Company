@@ -1,0 +1,46 @@
+{
+  "entity.rotp_zbc.all": "all",
+  "entity.rotp_zbc.all_c": "All",
+
+  "entity.rotp_zbc.bad_soldier": "Bad Company soldier",
+  "entity.rotp_zbc.bad_bullet": "Bad Company bullet",
+  "entity.rotp_zbc.bad_tank": "Bad Company tank",
+  "entity.rotp_zbc.bad_missile": "Bad Company missile",
+  "entity.rotp_zbc.bad_helicopter": "Bad Company helicopter",
+
+  "entity.rotp_zbc.bad_company": "Bad Company",
+  "stand.rotp_zbc.bad_company": "Bad Company",
+
+  "item.rotp_zbc.bad_gun": "Bad Rifle",
+  
+  "action.rotp_zbc.order_wait": "Order to %s units to wait and shoot ",
+  "action.rotp_zbc.order_no_wait": "Order to %s units to stop waiting ",
+  "action.rotp_zbc.units": "Select unit type",
+  "action.rotp_zbc.put_mines": "Put mines",
+  "action.rotp_zbc.explode_mines": "Explode mines",
+  "action.rotp_zbc.random": "Select summon formation",
+  "action.rotp_zbc.target": "Order to %s units set target",
+  "action.rotp_zbc.missile": "%s explosive missiles",
+  "action.rotp_zbc.shoot": "Order to %s units to forgive target",
+  "action.rotp_zbc.go_block": "Order to %s units to go to a Block Position",
+  "action.rotp_zbc.close": "Order to %s units to stay close ",
+  "action.rotp_zbc.closent": "Break order to %s units to stay close ",
+
+  "effect.rotp_zbc.sat": "Bad Sit Effect",
+
+  "rotp_zbc.subtitle.user": "\"Bad Company\"",
+  "rotp_zbc.subtitle.bc_soldier_step": "Bad Company Soldier Step",
+  "rotp_zbc.subtitle.shoot": "Bad Company Shoot",
+  "rotp_zbc.subtitle.tank_living": "Bad Company Tank",
+  "rotp_zbc.subtitle.tank_hurt": "Bad Company Tank damaged",
+  "rotp_zbc.subtitle.tank_shoot": "Missile shot",
+  "rotp_zbc.subtitle.tank_step": "Bad Company Tank Moving",
+  "rotp_zbc.subtitle.copter": "Bad Company Helicopter",
+
+  "gui.rotp_zbc.random": "Random",
+  "gui.rotp_zbc.circle": "Circle",
+  "gui.rotp_zbc.line": "Line",
+  "gui.rotp_zbc.arrow": "Arrow",
+  "gui.rotp_zbc.activate": "Activate",
+  "gui.rotp_zbc.deactivate": "Deactivate"
+}

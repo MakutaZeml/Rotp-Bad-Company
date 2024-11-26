@@ -1,0 +1,15 @@
+{
+	"parent": "jojo:item/tommy_gun",
+	"textures": {
+		"layer0": "rotp_zbc:item/bad_gun"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"rotp_zbc:stand_invisible": 1
+			},
+			"model": "jojo:item/invisible_item"
+		}
+	]
+}
+

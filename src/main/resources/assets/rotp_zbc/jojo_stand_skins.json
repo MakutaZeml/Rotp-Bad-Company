@@ -1,0 +1,16 @@
+{
+  "skins": {
+    "rotp_zbc:trooper": {
+      "stand_type": "rotp_zbc:bad_company",
+      "color": "0xF2F3F2"
+    },
+    "rotp_zbc:starship": {
+      "stand_type": "rotp_zbc:bad_company",
+      "color": "0x1C4778"
+    },
+    "rotp_zbc:drakkon": {
+      "stand_type": "rotp_zbc:bad_company",
+      "color": "0x398257"
+    }
+  }
+}
