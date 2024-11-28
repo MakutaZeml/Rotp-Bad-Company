@@ -79,6 +79,7 @@ public class ChangeFormationScreen extends Screen {
                         .get()
                         .getFormation()));
 
+        this.slots.clear();
         for (int i = 0; i < FormationType.VALUES.length; ++i) {
             FormationType type = FormationType.VALUES[i];
             this.slots.add(new SelectorFormationWidget(type, this.width / 2 - ALL_SLOTS_WIDTH / 2 + i * 30, this.height / 2 - 30));
