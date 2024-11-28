@@ -92,6 +92,7 @@ public class ChangeTroopScreen extends Screen {
 
         ALL_SLOTS_WIDTH = limit*30-5;
 
+        this.slots.clear();
         for (int i = 0; i < limit; ++i) {
             UnitType type = UnitType.VALUES[i];
             this.slots.add(new SelectorWidget(type, this.width / 2 - ALL_SLOTS_WIDTH / 2 + i * 30, this.height / 2 - 30));
