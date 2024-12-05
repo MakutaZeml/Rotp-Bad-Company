@@ -7,6 +7,8 @@ import com.zeml.rotp_zbc.RotpBadCompanyAddon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class FormationIcon {
     private static ResourceLocation RANDOM = new ResourceLocation(RotpBadCompanyAddon.MOD_ID, "textures/action/random.png");
     private static ResourceLocation CIRCLE = new ResourceLocation(RotpBadCompanyAddon.MOD_ID, "textures/action/circle.png");
@@ -16,29 +18,21 @@ public class FormationIcon {
     public static ResourceLocation getIconByType(FormationType type){
         switch (type){
             case CIRCLE:
-                IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
-                    CIRCLE = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), CIRCLE);
-                });
                 return CIRCLE;
             case LINE:
-                IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
-                    LINE = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), LINE);
-                });
                 return LINE;
             default:
-                IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
-                    RANDOM = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), RANDOM);
-                });
                 return RANDOM;
         }
     }
 
     public static void renderIcon(FormationType type, MatrixStack matrixStack, float x, float y){
-        ResourceLocation icon = getIconByType(type);
-        Minecraft.getInstance().getTextureManager().bind(icon);
+        AtomicReference<ResourceLocation> icon = new AtomicReference<>(getIconByType(type));
+        IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
+            icon.set(StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                    .getStandSkin(power.getStandInstance().get()), icon.get()));
+        });
+        Minecraft.getInstance().getTextureManager().bind(icon.get());
         BlitFloat.blitFloat(matrixStack, x, y, 0, 0, 16, 16, 16, 16);
     }
 

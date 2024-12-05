@@ -46,6 +46,6 @@ public class BadHelicopterRenderer extends MobRenderer<BadHelicopterEntity, BadH
                 }
             });
         }
-        return SOLDIER;
+        return ClientUtil.canSeeStands() ?SOLDIER : VOID;
     }
 }

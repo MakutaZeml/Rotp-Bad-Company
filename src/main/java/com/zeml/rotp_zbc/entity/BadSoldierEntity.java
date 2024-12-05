@@ -104,7 +104,7 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
                 this.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
             }
 
-            boolean para = !this.isOnGround() && this.level.getBlockState(this.blockPosition().below().below()).is(Blocks.AIR);
+            boolean para = !this.isOnGround() && this.level.getBlockState(this.blockPosition().below().below()).is(Blocks.AIR) && !this.isClimbing();
             this.entityData.set(PARACHUTE,para);
             if(para){
                 this.addEffect(new EffectInstance(Effects.SLOW_FALLING,40,1,false,false,false));

@@ -1,5 +1,6 @@
 package com.zeml.rotp_zbc.client.render.entity.renderer;
 
+import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
@@ -43,7 +44,7 @@ public class BadSoldierRenderer extends MobRenderer<BadSoldierEntity, BadSoldier
                 }
             });
         }
-        return SOLDIER;
+        return ClientUtil.canSeeStands() ?SOLDIER : VOID;
     }
 
 

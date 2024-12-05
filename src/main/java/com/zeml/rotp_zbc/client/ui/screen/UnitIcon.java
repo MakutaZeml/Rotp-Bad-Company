@@ -7,6 +7,8 @@ import com.zeml.rotp_zbc.RotpBadCompanyAddon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class UnitIcon {
     private static ResourceLocation ALL = new ResourceLocation(RotpBadCompanyAddon.MOD_ID, "textures/power/bad_company.png");
     private static ResourceLocation SOLDIER = new ResourceLocation(RotpBadCompanyAddon.MOD_ID, "textures/action/soldier.png");
@@ -16,35 +18,24 @@ public class UnitIcon {
     public static ResourceLocation getIconByType(UnitType type){
         switch (type){
             case SOLDIER:
-                IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
-                    SOLDIER = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), SOLDIER);
-                });
                 return SOLDIER;
             case TANK:
-                IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
-                    TANK = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), TANK);
-                });
                 return TANK;
             case HELICOPTER:
-                IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
-                    HELICOPTER = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), HELICOPTER);
-                });
                 return HELICOPTER;
             default:
-                IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
-                    ALL = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), ALL);
-                });
+
                 return ALL;
         }
     }
 
     public static void renderIcon(UnitType type, MatrixStack matrixStack, float x, float y){
-        ResourceLocation icon = getIconByType(type);
-        Minecraft.getInstance().getTextureManager().bind(icon);
+        AtomicReference<ResourceLocation> icon = new AtomicReference<>(getIconByType(type));
+        IStandPower.getStandPowerOptional(Minecraft.getInstance().player).ifPresent(power -> {
+            icon.set(StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                    .getStandSkin(power.getStandInstance().get()), icon.get()));
+        });
+        Minecraft.getInstance().getTextureManager().bind(icon.get());
         BlitFloat.blitFloat(matrixStack, x, y, 0, 0, 16, 16, 16, 16);
     }
 }

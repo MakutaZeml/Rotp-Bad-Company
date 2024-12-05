@@ -42,6 +42,6 @@ public class BadTankRenderer extends MobRenderer<BadTankEntity, BadTankModel> {
                 }
             });
         }
-        return SOLDIER;
+        return ClientUtil.canSeeStands() ?SOLDIER : VOID;
     }
 }

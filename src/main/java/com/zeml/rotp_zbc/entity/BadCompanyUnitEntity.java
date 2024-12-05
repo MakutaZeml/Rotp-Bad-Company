@@ -3,6 +3,7 @@ package com.zeml.rotp_zbc.entity;
 import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.power.impl.stand.StandUtil;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.damage.IModdedDamageSource;
 import com.github.standobyte.jojo.util.mc.damage.IStandDamageSource;
@@ -49,7 +50,7 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
         this.goalSelector.addGoal(1, new BadGoToPosition(this));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, MobEntity.class, 5, false, false, (p_234199_0_) -> {
-            return p_234199_0_ instanceof IMob;
+            return p_234199_0_ instanceof IMob && p_234199_0_ != this.getOwner();
         }));
         this.targetSelector.addGoal(3,  new BadNearrestAttackableGoal<>(this, PlayerEntity.class,5,false,false, LivingEntity::isAlive));
     }
@@ -149,6 +150,8 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
                         this.setTarget(this.getOwner().getLastHurtByMob());
                     }
                 }
+            }else {
+                this.remove();
             }
         }
     }
@@ -257,12 +260,6 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
             }
         }
         return super.isAlliedTo(entity);
-    }
-
-
-    @Override
-    public boolean isInvisible() {
-        return !ClientUtil.canSeeStands();
     }
 
 
