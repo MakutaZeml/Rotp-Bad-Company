@@ -11,6 +11,18 @@
     "rotp_zbc:drakkon": {
       "stand_type": "rotp_zbc:bad_company",
       "color": "0x398257"
+    },
+    "rotp_zbc:lethal": {
+      "stand_type": "rotp_zbc:bad_company",
+      "color": "0xc56808"
+    },
+    "rotp_zbc:red_ribbon": {
+      "stand_type": "rotp_zbc:bad_company",
+      "color": "0xff0034"
+    },
+    "rotp_zbc:hell_diver": {
+      "stand_type": "rotp_zbc:bad_company",
+      "color": "0xF2CD37"
     }
   }
 }

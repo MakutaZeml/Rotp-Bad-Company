@@ -32,7 +32,10 @@
     "subtitle": "rotp_zbc.subtitle.user",
     "sounds": [ "rotp_zbc:user/bc_user"]
   },
-
+  "bc_barrage": {
+    "subtitle": "rotp_zbc.subtitle.bc_barrage",
+    "sounds": [ "rotp_zbc:stand/barrage_shot_1","rotp_zbc:stand/barrage_shot_2","rotp_zbc:stand/barrage_shot_3"]
+  },
 
   "void":{
     "sounds": [ "rotp_zbc:void"]
