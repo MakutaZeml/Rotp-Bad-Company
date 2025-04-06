@@ -1,6 +1,7 @@
 package com.zeml.rotp_zbc.entity;
 
 import com.github.standobyte.jojo.client.ClientUtil;
+import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zbc.entity.damaging.projectile.BadBulletEntity;
@@ -42,6 +43,7 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
     private static final DataParameter<Boolean> PARACHUTE = EntityDataManager.defineId(BadSoldierEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> DATA_FLAGS_ID = EntityDataManager.defineId(BadSoldierEntity.class, DataSerializers.BYTE);
 
+    private boolean toMe = false;
     private float range=30;
     public BadSoldierEntity(@NotNull World world){
         super(InitEntities.BAD_SOLDIER.get(), world);
@@ -72,6 +74,7 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
         super.addAdditionalSaveData(nbt);
         nbt.putBoolean("Shoot",this.entityData.get(IS_SHOOTING));
         nbt.putBoolean("Parachuting",this.entityData.get(PARACHUTE));
+        nbt.putBoolean("toMe", this.toMe);
     }
 
 
@@ -80,6 +83,7 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
         super.readAdditionalSaveData(nbt);
         this.entityData.set(IS_SHOOTING,nbt.getBoolean ("Shoot"));
         this.entityData.set(PARACHUTE,nbt.getBoolean ("Parachuting"));
+        this.toMe = nbt.getBoolean("toMe");
 
     }
 
@@ -131,6 +135,9 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
             bulletEntity.shoot(dx, dy, dz, 1.6F, 0.02F);
             if(this.getOwner()!=null){
                 bulletEntity.setStandOwner(this.getOwner());
+                IStandPower.getStandPowerOptional(this.getOwner()).ifPresent(power -> {
+                    bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
+                });
             }
             this.playSound(InitSounds.SOLDIER_SHOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             this.level.addFreshEntity(bulletEntity);
@@ -183,6 +190,14 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
         }
 
         this.entityData.set(DATA_FLAGS_ID, b0);
+    }
+
+    public boolean isToMe() {
+        return this.toMe;
+    }
+
+    public void setToMe(boolean toMe) {
+        this.toMe = toMe;
     }
 
     @OnlyIn(Dist.CLIENT)

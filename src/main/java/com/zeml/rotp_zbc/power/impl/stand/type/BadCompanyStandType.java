@@ -100,53 +100,58 @@ public class BadCompanyStandType <T extends StandStats> extends EntityStandType<
     @Override
     public boolean summon(LivingEntity user, IStandPower standPower, Consumer<StandEntity> beforeTheSummon, boolean withoutNameVoiceLine, boolean addToWorld) {
         if(!user.level.isClientSide){
-
-
-            for(int i=0; i<=9;i++) {
-                BadSoldierEntity soldier = new BadSoldierEntity(user.level);
-                switch (getFormation(standPower)){
-                    case 1:
-                        soldier.teleportTo(user.getX() + 1.5F*MathHelper.cos(2F*3.14159F*i/10), user.getY(),  user.getZ()+1.5F *MathHelper.sin(2F*3.14159F*i/10));
-                        break;
-                    case 2:
-                        float radius = (float) Math.floor((double) (i + 2) /2);
-                        float radiansAngle = (float) (user.yBodyRot*3.14159/180);
-                        float centerX = (float) (user.getX()-2*MathHelper.sin(radiansAngle));
-                        float centerZ = (float) (user.getZ()+2*MathHelper.cos(radiansAngle));
-                        soldier.teleportTo(centerX+radius*MathHelper.cos(radiansAngle+3.14159F*(i+ 1)),user.getY(),centerZ+radius*MathHelper.sin(radiansAngle+3.14159F*(i+ 1)));
-                        break;
-                    default:
-                        soldier.teleportTo(user.getX()+5-10F* Math.random(), user.getY(),user.getZ()+5-10F* Math.random());
-                        break;
+            if(getSumonSoldier(standPower)){
+                for(int i=0; i<=9;i++) {
+                    BadSoldierEntity soldier = new BadSoldierEntity(user.level);
+                    switch (getFormation(standPower)){
+                        case 1:
+                            soldier.teleportTo(user.getX() + 1.5F*MathHelper.cos(2F*3.14159F*i/10), user.getY(),  user.getZ()+1.5F *MathHelper.sin(2F*3.14159F*i/10));
+                            break;
+                        case 2:
+                            float radius = (float) Math.floor((double) (i + 2) /2);
+                            float radiansAngle = (float) (user.yBodyRot*3.14159/180);
+                            float centerX = (float) (user.getX()-2*MathHelper.sin(radiansAngle));
+                            float centerZ = (float) (user.getZ()+2*MathHelper.cos(radiansAngle));
+                            soldier.teleportTo(centerX+radius*MathHelper.cos(radiansAngle+3.14159F*(i+ 1)),user.getY(),centerZ+radius*MathHelper.sin(radiansAngle+3.14159F*(i+ 1)));
+                            break;
+                        default:
+                            soldier.teleportTo(user.getX()+5-10F* Math.random(), user.getY(),user.getZ()+5-10F* Math.random());
+                            break;
+                    }
+                    soldier.setOwnerUUID(user.getUUID());
+                    user.level.addFreshEntity(soldier);
                 }
-                soldier.setOwnerUUID(user.getUUID());
-                user.level.addFreshEntity(soldier);
+
             }
             if(standPower.getResolveLevel()>1){
-                for(int i=0; i<=1; i++){
-                    BadTankEntity tankEntity = new BadTankEntity(user);
-                    if (getFormation(standPower) == 0) {
-                        tankEntity.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
-                    } else {
-                        float radiansAngle = (float) ((user.yBodyRot + 90) * 3.14159 / 180);
-                        tankEntity.teleportTo(user.getX() + 2.5F * MathHelper.cos(radiansAngle + 3.14159F * (i + (float) 1 / 2)), user.getY(), user.getZ() + 2.5F * MathHelper.sin(radiansAngle + 3.14159F * (i + (float) 1 / 2)));
+                if(getSumonTank(standPower)){
+                    for(int i=0; i<=1; i++){
+                        BadTankEntity tankEntity = new BadTankEntity(user);
+                        if (getFormation(standPower) == 0) {
+                            tankEntity.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
+                        } else {
+                            float radiansAngle = (float) ((user.yBodyRot + 90) * 3.14159 / 180);
+                            tankEntity.teleportTo(user.getX() + 2.5F * MathHelper.cos(radiansAngle + 3.14159F * (i + (float) 1 / 2)), user.getY(), user.getZ() + 2.5F * MathHelper.sin(radiansAngle + 3.14159F * (i + (float) 1 / 2)));
+                        }
+                        tankEntity.setOwnerUUID(user.getUUID());
+                        user.level.addFreshEntity(tankEntity);
                     }
-                    tankEntity.setOwnerUUID(user.getUUID());
-                    user.level.addFreshEntity(tankEntity);
                 }
             }
             if(standPower.getResolveLevel()>2){
-                for(int i=0; i<=1; i++){
-                    BadHelicopterEntity helicopter = new BadHelicopterEntity(user);
-                    if (getFormation(standPower) == 0) {
-                        helicopter.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY()+2, user.getZ() + 5 - 10F * Math.random());
-                    } else {
-                        float radiansAngle = (float) ((user.yBodyRot + 90) * 3.14159 / 180);
-                        helicopter.teleportTo(user.getX() + 2.5F * MathHelper.cos(radiansAngle + 3.14159F * (i + (float) 1 / 2)), user.getY()+2, user.getZ() + 2.5F * MathHelper.sin(radiansAngle + 3.14159F * (i + (float) 1 / 2)));
+                if(getSumonCopter(standPower)){
+                    for(int i=0; i<=1; i++){
+                        BadHelicopterEntity helicopter = new BadHelicopterEntity(user);
+                        if (getFormation(standPower) == 0) {
+                            helicopter.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY()+2, user.getZ() + 5 - 10F * Math.random());
+                        } else {
+                            float radiansAngle = (float) ((user.yBodyRot + 90) * 3.14159 / 180);
+                            helicopter.teleportTo(user.getX() + 2.5F * MathHelper.cos(radiansAngle + 3.14159F * (i + (float) 1 / 2)), user.getY()+2, user.getZ() + 2.5F * MathHelper.sin(radiansAngle + 3.14159F * (i + (float) 1 / 2)));
+                        }
+                        helicopter.setNoGravity(true);
+                        helicopter.setOwnerUUID(user.getUUID());
+                        user.level.addFreshEntity(helicopter);
                     }
-                    helicopter.setNoGravity(true);
-                    helicopter.setOwnerUUID(user.getUUID());
-                    user.level.addFreshEntity(helicopter);
                 }
             }
 
@@ -264,5 +269,18 @@ public class BadCompanyStandType <T extends StandStats> extends EntityStandType<
         return livingDataOptional.map(LivingData::isCopterClose).orElse(false);
     }
 
+    public boolean getSumonSoldier(IStandPower power){
+        LazyOptional<LivingData> livingDataOptional = power.getUser().getCapability(LivingDataProvider.CAPABILITY);
+        return livingDataOptional.map(LivingData::isSummonSoldier).orElse(false);
+    }
+    public boolean getSumonTank(IStandPower power){
+        LazyOptional<LivingData> livingDataOptional = power.getUser().getCapability(LivingDataProvider.CAPABILITY);
+        return livingDataOptional.map(LivingData::isSummonTank).orElse(false);
+    }
+
+    public boolean getSumonCopter(IStandPower power){
+        LazyOptional<LivingData> livingDataOptional = power.getUser().getCapability(LivingDataProvider.CAPABILITY);
+        return livingDataOptional.map(LivingData::isSummonCopter).orElse(false);
+    }
 
 }

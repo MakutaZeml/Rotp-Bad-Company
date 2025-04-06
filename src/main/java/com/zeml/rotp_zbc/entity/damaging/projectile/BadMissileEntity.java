@@ -2,6 +2,7 @@ package com.zeml.rotp_zbc.entity.damaging.projectile;
 
 import com.github.standobyte.jojo.JojoModConfig;
 import com.github.standobyte.jojo.client.ClientUtil;
+import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.zeml.rotp_zbc.capability.entity.LivingData;
 import com.zeml.rotp_zbc.capability.entity.LivingDataProvider;
 import com.zeml.rotp_zbc.entity.BadCompanyUnitEntity;
@@ -59,7 +60,6 @@ public class BadMissileEntity extends BadProjectile {
             if(this.getStandOwner() != null){
                 LazyOptional<LivingData> livingDataOptional = this.getStandOwner().getCapability(LivingDataProvider.CAPABILITY);
 
-                System.out.println(this.getStandOwner()+" "+livingDataOptional.map(LivingData::isExplosiveMissiles).orElse(true));
 
                 MODE = livingDataOptional.map(LivingData::isExplosiveMissiles).orElse(true)? Explosion.Mode.BREAK: Explosion.Mode.NONE;
             }
@@ -80,8 +80,6 @@ public class BadMissileEntity extends BadProjectile {
 
                 if(this.getStandOwner() != null){
                     LazyOptional<LivingData> livingDataOptional = this.getStandOwner().getCapability(LivingDataProvider.CAPABILITY);
-
-                    System.out.println(this.getStandOwner()+" "+livingDataOptional.map(LivingData::isExplosiveMissiles).orElse(true));
 
                     MODE = livingDataOptional.map(LivingData::isExplosiveMissiles).orElse(true)? Explosion.Mode.BREAK: Explosion.Mode.NONE;
                 }

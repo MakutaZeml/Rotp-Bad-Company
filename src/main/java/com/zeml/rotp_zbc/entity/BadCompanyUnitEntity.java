@@ -8,6 +8,7 @@ import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.damage.IModdedDamageSource;
 import com.github.standobyte.jojo.util.mc.damage.IStandDamageSource;
 import com.zeml.rotp_zbc.capability.entity.LivingData;
+import com.zeml.rotp_zbc.capability.entity.LivingDataProvider;
 import com.zeml.rotp_zbc.entity.ia.goal.BadFollowOwnerGoal;
 import com.zeml.rotp_zbc.entity.ia.goal.BadGoToPosition;
 import com.zeml.rotp_zbc.entity.ia.goal.BadNearrestAttackableGoal;
@@ -31,6 +32,8 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BadCompanyUnitEntity extends TameableEntity implements IRangedAttackMob {
     private static final DataParameter<Boolean> STAY_CLOSE = EntityDataManager.defineId(BadCompanyUnitEntity.class,DataSerializers.BOOLEAN);
@@ -106,33 +109,41 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
                     }
 
                     if(this.entityData.get(GOINGTO) && this.getTarget() == null){
+                        LazyOptional<LivingData> livingDataLazyOptional = this.getOwner().getCapability(LivingDataProvider.CAPABILITY);
                         if(this instanceof BadSoldierEntity){
                             this.removeEffect(InitStatusEffect.SAT.get());
-                            BlockPos pos = ((BadCompanyStandType<?>) power.getType()).getSoldierPostGoing(power);
+                            BlockPos pos = livingDataLazyOptional.map(LivingData::getSoldierPostGoing).orElse(new BlockPos(0,0,0));
                             this.navigation.moveTo(pos.getX(),pos.getY(),pos.getZ(),.3);
                             if(this.distanceToSqr(Vector3d.atCenterOf(pos))<1){
                                 this.entityData.set(GOINGTO,false);
-                                if(((BadCompanyStandType<?>) power.getType()).getSoldierStay(power)){
+                                if(livingDataLazyOptional.map(LivingData::getSoldierStay).orElse(false)){
                                     this.addEffect(new EffectInstance(InitStatusEffect.SAT.get(),Integer.MAX_VALUE));
                                 }
                             }
                         }
                         if(this instanceof BadTankEntity){
                             this.removeEffect(InitStatusEffect.SAT.get());
-                            BlockPos pos = ((BadCompanyStandType<?>) power.getType()).getTankPostGoing(power);
+                            BlockPos pos = livingDataLazyOptional.map(LivingData::getTankPostGoing).orElse(new BlockPos(0,0,0));
                             this.navigation.moveTo(pos.getX(),pos.getY(),pos.getZ(),.3);
                             if(this.distanceToSqr(Vector3d.atCenterOf(pos))<1){
                                 this.entityData.set(GOINGTO,false);
-                                if(((BadCompanyStandType<?>) power.getType()).getTankStay(power)){
+                                if(livingDataLazyOptional.map(LivingData::getTankStay).orElse(false)){
                                     this.addEffect(new EffectInstance(InitStatusEffect.SAT.get(),Integer.MAX_VALUE));
                                 }
                             }
                         }
                         if(this instanceof BadHelicopterEntity){
-                            BlockPos pos = ((BadCompanyStandType<?>) power.getType()).getCopterPostGoing(power);
+                            this.removeEffect(InitStatusEffect.SAT.get());
+                            BlockPos pos = livingDataLazyOptional.map(LivingData::getCopterPostGoing).orElse(new BlockPos(0,0,0));
                             this.navigation.moveTo(pos.getX(),pos.getY(),pos.getZ(),.3);
                             if(this.distanceToSqr(Vector3d.atCenterOf(pos))<1){
                                 this.entityData.set(GOINGTO,false);
+                                if(this.distanceToSqr(Vector3d.atCenterOf(pos))<1){
+                                    this.entityData.set(GOINGTO,false);
+                                    if(livingDataLazyOptional.map(LivingData::getCopterStay).orElse(false)){
+                                        this.addEffect(new EffectInstance(InitStatusEffect.SAT.get(),Integer.MAX_VALUE));
+                                    }
+                                }
                             }
                         }
 
@@ -261,6 +272,7 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
         }
         return super.isAlliedTo(entity);
     }
+
 
 
 

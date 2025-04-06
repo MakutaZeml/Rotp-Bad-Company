@@ -19,6 +19,10 @@ public class LivingData implements INBTSerializable<CompoundNBT> {
     private boolean copterStay = false;
     private boolean explosiveMissiles = true;
 
+    private boolean summonSoldier = true;
+    private boolean summonTank = true;
+    private boolean summonCopter = true;
+
     private BlockPos soldierPostGoing = new BlockPos(0,0,0);
     private BlockPos tankPostGoing = new BlockPos(0,0,0);
     private BlockPos copterPostGoing = new BlockPos(0,0,0);
@@ -178,7 +182,38 @@ public class LivingData implements INBTSerializable<CompoundNBT> {
         return this.copterPostGoing;
     }
 
+    public void setSummonSoldier(boolean summonSoldier) {
+        this.summonSoldier = summonSoldier;
+        if(entity instanceof ServerPlayerEntity){
+            AddonPackets.sendToClient(new SummonSoldierPacket(this.entity.getId(), summonSoldier),(ServerPlayerEntity) this.entity);
+        }
+    }
 
+    public boolean isSummonSoldier() {
+        return summonSoldier;
+    }
+
+    public void setSummonTank(boolean summonTank) {
+        this.summonTank = summonTank;
+        if(entity instanceof ServerPlayerEntity){
+             AddonPackets.sendToClient(new SummonTankPacket(this.entity.getId(), summonTank),(ServerPlayerEntity) this.entity);
+        }
+    }
+
+    public boolean isSummonTank() {
+        return summonTank;
+    }
+
+    public void setSummonCopter(boolean summonCopter) {
+        this.summonCopter = summonCopter;
+        if(entity instanceof ServerPlayerEntity){
+            AddonPackets.sendToClient(new SummonCopterPacket(this.entity.getId(), summonCopter),(ServerPlayerEntity) this.entity);
+        }
+    }
+
+    public boolean isSummonCopter() {
+        return summonCopter;
+    }
 
     public void syncWithAnyPlayer(ServerPlayerEntity player) {
 
@@ -192,10 +227,13 @@ public class LivingData implements INBTSerializable<CompoundNBT> {
         AddonPackets.sendToClient(new SetUnitTypePacket(player.getId(),this.unitType), player);
         AddonPackets.sendToClient(new SetCopterStayPacket(player.getId(),this.copterStay),player);
         AddonPackets.sendToClient(new LandedMinesPacket(player.getId(),this.landedMines),player);
-        AddonPackets.sendToClient(new MissileModePacket(player.getId(),explosiveMissiles),player);
-        AddonPackets.sendToClient(new SoldierStayClosePacket(player.getId(),soldierClose),player);
-        AddonPackets.sendToClient(new TankStayClosePacket(player.getId(), tankClose), player);
-        AddonPackets.sendToClient(new CopterStayClosePacket(player.getId(), copterClose), player);
+        AddonPackets.sendToClient(new MissileModePacket(player.getId(),this.explosiveMissiles),player);
+        AddonPackets.sendToClient(new SoldierStayClosePacket(player.getId(),this.soldierClose),player);
+        AddonPackets.sendToClient(new TankStayClosePacket(player.getId(), this.tankClose), player);
+        AddonPackets.sendToClient(new CopterStayClosePacket(player.getId(), this.copterClose), player);
+        AddonPackets.sendToClient(new SummonSoldierPacket(player.getId(), this.summonSoldier),player);
+        AddonPackets.sendToClient(new SummonTankPacket(player.getId(), this.summonTank),player);
+        AddonPackets.sendToClient(new SummonCopterPacket(player.getId(), this.summonCopter),player);
     }
 
 
@@ -210,6 +248,9 @@ public class LivingData implements INBTSerializable<CompoundNBT> {
         nbt.putInt("Unit type", this.unitType);
         nbt.putBoolean("Mines",this.landedMines);
         nbt.putBoolean("Missile",this.explosiveMissiles);
+        nbt.putBoolean("summonSoldier",this.summonSoldier);
+        nbt.putBoolean("summonTank",this.summonTank);
+        nbt.putBoolean("summonCopter",this.summonCopter);
         return nbt;
     }
 
@@ -221,5 +262,8 @@ public class LivingData implements INBTSerializable<CompoundNBT> {
         this.unitType = nbt.getInt("Unit type");
         this.landedMines = nbt.getBoolean("Mines");
         this.explosiveMissiles = nbt.getBoolean("Missile");
+        this.summonSoldier = nbt.getBoolean("summonSoldier");
+        this.summonTank = nbt.getBoolean("summonTank");
+        this.summonCopter = nbt.getBoolean("summonCopter");
     }
 }

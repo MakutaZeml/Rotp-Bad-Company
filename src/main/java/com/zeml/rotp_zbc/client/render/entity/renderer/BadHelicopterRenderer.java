@@ -12,6 +12,7 @@ import com.zeml.rotp_zbc.entity.BadHelicopterEntity;
 import com.zeml.rotp_zbc.entity.BadTankEntity;
 import com.zeml.rotp_zbc.init.InitStands;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -34,11 +35,11 @@ public class BadHelicopterRenderer extends MobRenderer<BadHelicopterEntity, BadH
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BadHelicopterEntity p_110775_1_) {
-        if(p_110775_1_.getOwner() != null){
-            IStandPower.getStandPowerOptional(p_110775_1_.getOwner()).ifPresent(power -> {
-                StandType<?> KQ = InitStands.STAND_BAD_COMPANY.getStandType();
-                if(power.getType() == KQ){
+    public ResourceLocation getTextureLocation(BadHelicopterEntity entity) {
+        if(entity.getOwner() != null){
+            IStandPower.getStandPowerOptional(entity.getOwner()).ifPresent(power -> {
+                StandType<?> BC = InitStands.STAND_BAD_COMPANY.getStandType();
+                if(power.getType() == BC){
                     SOLDIER = StandSkinsManager.getInstance() != null? (StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
                             .getStandSkin(power.getStandInstance().get()), TEXTURE)): TEXTURE ;
                 }else {
@@ -47,5 +48,10 @@ public class BadHelicopterRenderer extends MobRenderer<BadHelicopterEntity, BadH
             });
         }
         return ClientUtil.canSeeStands() ?SOLDIER : VOID;
+    }
+
+    @Override
+    public boolean shouldRender(BadHelicopterEntity p_225626_1_, ClippingHelper p_225626_2_, double p_225626_3_, double p_225626_5_, double p_225626_7_) {
+        return ClientUtil.canSeeStands() && super.shouldRender(p_225626_1_, p_225626_2_, p_225626_3_, p_225626_5_, p_225626_7_);
     }
 }

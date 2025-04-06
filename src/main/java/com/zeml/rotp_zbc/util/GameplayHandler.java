@@ -39,34 +39,41 @@ public class GameplayHandler {
                     IStandPower.getStandPowerOptional(owner).ifPresent(power -> {
                         if(badCompanyUnit instanceof BadSoldierEntity){
                             BadSoldierEntity badSoldier = (BadSoldierEntity) badCompanyUnit;
-                            if(power.getStamina() >= 50){
-                                BadSoldierEntity newBadSolider = new BadSoldierEntity(badSoldier.level);
-                                newBadSolider.setOwnerUUID(badSoldier.getOwnerUUID());
-                                LivingEntity user = badSoldier.getOwner();
-                                newBadSolider.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
-                                badSoldier.level.addFreshEntity(newBadSolider);
-                                power.consumeStamina(50);
+                            if(((BadCompanyStandType<?>)power.getType()).getSumonSoldier(power)){
+                                if(power.getStamina() >= 50){
+                                    BadSoldierEntity newBadSolider = new BadSoldierEntity(badSoldier.level);
+                                    newBadSolider.setOwnerUUID(badSoldier.getOwnerUUID());
+                                    LivingEntity user = badSoldier.getOwner();
+                                    newBadSolider.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
+                                    badSoldier.level.addFreshEntity(newBadSolider);
+                                    power.consumeStamina(50);
+                                }
                             }
                         } else if (badCompanyUnit instanceof BadTankEntity) {
-                            BadTankEntity badTankEntity = (BadTankEntity) badCompanyUnit;
-                            if(power.getStamina() >= 100){
-                                BadTankEntity newBadTankEntity = new BadTankEntity(badTankEntity.getOwner());
-                                newBadTankEntity.setOwnerUUID(badTankEntity.getOwnerUUID());
-                                LivingEntity user = badTankEntity.getOwner();
-                                newBadTankEntity.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
-                                badTankEntity.level.addFreshEntity(newBadTankEntity);
-                                power.consumeStamina(100);
+                            if(((BadCompanyStandType<?>)power.getType()).getSumonTank(power)){
+                                BadTankEntity badTankEntity = (BadTankEntity) badCompanyUnit;
+                                if(power.getStamina() >= 100){
+                                    BadTankEntity newBadTankEntity = new BadTankEntity(badTankEntity.getOwner());
+                                    newBadTankEntity.setOwnerUUID(badTankEntity.getOwnerUUID());
+                                    LivingEntity user = badTankEntity.getOwner();
+                                    newBadTankEntity.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
+                                    badTankEntity.level.addFreshEntity(newBadTankEntity);
+                                    power.consumeStamina(100);
+                                }
                             }
                         } else if (badCompanyUnit instanceof BadHelicopterEntity) {
-                            BadHelicopterEntity badHelicopter = (BadHelicopterEntity) badCompanyUnit;
-                            if(power.getStamina() >= 100){
-                                BadHelicopterEntity newBadHelicopter = new BadHelicopterEntity(badHelicopter.getOwner());
-                                newBadHelicopter.setOwnerUUID(badHelicopter.getOwnerUUID());
-                                LivingEntity user = badHelicopter.getOwner();
-                                newBadHelicopter.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
-                                badHelicopter.level.addFreshEntity(newBadHelicopter);
-                                power.consumeStamina(100);
+                            if(((BadCompanyStandType<?>)power.getType()).getSumonCopter(power)){
+                                BadHelicopterEntity badHelicopter = (BadHelicopterEntity) badCompanyUnit;
+                                if(power.getStamina() >= 100){
+                                    BadHelicopterEntity newBadHelicopter = new BadHelicopterEntity(badHelicopter.getOwner());
+                                    newBadHelicopter.setOwnerUUID(badHelicopter.getOwnerUUID());
+                                    LivingEntity user = badHelicopter.getOwner();
+                                    newBadHelicopter.teleportTo(user.getX() + 5 - 10F * Math.random(), user.getY(), user.getZ() + 5 - 10F * Math.random());
+                                    badHelicopter.level.addFreshEntity(newBadHelicopter);
+                                    power.consumeStamina(100);
+                                }
                             }
+
                         }
                     });
                 }

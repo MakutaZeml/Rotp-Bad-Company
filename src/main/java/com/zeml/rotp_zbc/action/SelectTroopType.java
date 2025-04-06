@@ -18,7 +18,7 @@ public class SelectTroopType extends StandAction {
 
     @Override
     protected void perform(World world, LivingEntity user, IStandPower power, ActionTarget target) {
-        if(world.isClientSide){
+        if(world.isClientSide && user == com.github.standobyte.jojo.client.ClientUtil.getClientPlayer()){
             ChangeTroopScreen.openWindowOnClick();
         }
     }

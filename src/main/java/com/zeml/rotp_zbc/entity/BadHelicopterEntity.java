@@ -1,12 +1,15 @@
 package com.zeml.rotp_zbc.entity;
 
+import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.zeml.rotp_zbc.entity.damaging.projectile.BadBulletEntity;
 import com.zeml.rotp_zbc.entity.damaging.projectile.BadMissileEntity;
 import com.zeml.rotp_zbc.entity.ia.goal.BadFollowOwnerGoal;
 import com.zeml.rotp_zbc.init.InitEntities;
 import com.zeml.rotp_zbc.init.InitSounds;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -25,16 +28,19 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
+import java.util.Optional;
+
 public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlyingAnimal {
     private static final DataParameter<Integer> MISSILES = EntityDataManager.defineId(BadHelicopterEntity.class, DataSerializers.INT);
-
     private float range=30;
+    private BadSoldierEntity objective;
 
     public BadHelicopterEntity(EntityType<? extends TameableEntity> p_i48574_1_, World p_i48574_2_) {
         super(p_i48574_1_, p_i48574_2_);
@@ -105,6 +111,7 @@ public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlying
                     counter = 0;
                 }
             }
+
         }
     }
 
@@ -129,6 +136,10 @@ public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlying
             this.level.addFreshEntity(bulletEntity);
             if(this.getOwner()!=null){
                 bulletEntity.setStandOwner(this.getOwner());
+                System.out.println(this.getOwner());
+                IStandPower.getStandPowerOptional(this.getOwner()).ifPresent(power -> {
+                    bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
+                });
             }
             if(entityData.get(MISSILES)>0 && Math.random() <.2){
                 if(this.getOwner() != null){
@@ -142,9 +153,11 @@ public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlying
         }
     }
 
+
+
     @Override
     protected SoundEvent getAmbientSound() {
-        return InitSounds.COPTER.get();
+        return  InitSounds.COPTER.get();
     }
 
     @Override
@@ -170,6 +183,8 @@ public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlying
         this.entityData.set(MISSILES,missiles);
     }
 
+
+
     private void shootMissile( LivingEntity target){
         double dx = target.getX() - this.getX();
         double dy = target.getEyeY() - (this.getEyeY()+.5);
@@ -183,4 +198,13 @@ public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlying
         this.level.addFreshEntity(bulletEntity);
     }
 
+    protected boolean canAddPassenger(Entity p_184219_1_) {
+        return this.getPassengers().size() < 2 && !this.isEyeInFluid(FluidTags.WATER);
+    }
+
+
+    @Override
+    public double getPassengersRidingOffset() {
+        return super.getPassengersRidingOffset();
+    }
 }

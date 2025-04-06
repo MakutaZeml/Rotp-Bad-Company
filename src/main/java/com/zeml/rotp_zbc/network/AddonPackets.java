@@ -2,8 +2,7 @@ package com.zeml.rotp_zbc.network;
 
 import com.github.standobyte.jojo.network.packets.IModPacketHandler;
 import com.zeml.rotp_zbc.RotpBadCompanyAddon;
-import com.zeml.rotp_zbc.network.packets.client.PlayerFormationPacket;
-import com.zeml.rotp_zbc.network.packets.client.PlayerTroopTypePacket;
+import com.zeml.rotp_zbc.network.packets.client.*;
 import com.zeml.rotp_zbc.network.packets.server.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -66,6 +65,17 @@ public class AddonPackets {
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         channel.registerMessage(packetIndex++, CopterStayClosePacket.class,
                 CopterStayClosePacket::encode, CopterStayClosePacket::decode,CopterStayClosePacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+
+
+        channel.registerMessage(packetIndex++, SummonSoldierPacket.class,
+                SummonSoldierPacket::encode, SummonSoldierPacket::decode, SummonSoldierPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        channel.registerMessage(packetIndex++, SummonTankPacket.class,
+                SummonTankPacket::encode, SummonTankPacket::decode, SummonTankPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        channel.registerMessage(packetIndex++, SummonCopterPacket.class,
+                SummonCopterPacket::encode, SummonCopterPacket::decode, SummonCopterPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 
         packetIndex = 0;

@@ -33,6 +33,9 @@ public class InitStands {
     public static final RegistryObject<StandAction> DONT_SHOOT = ACTIONS.register("shoot",
             ()->new DontShootOrder(new StandAction.Builder().resolveLevelToUnlock(3)));
 
+    public static final RegistryObject<StandEntityAction> TO_ME = ACTIONS.register("to_me",
+            ()->new SoldierFrontLineAction(new StandEntityAction.Builder().holdType().standUserWalkSpeed(0.15F)));
+
     public static final RegistryObject<StandAction> SELECT_FORMATION = ACTIONS.register("random",
             ()->new SelectFormation(new StandAction.Builder().resolveLevelToUnlock(1)));
     public static final RegistryObject<StandAction> ORDER_SIT = ACTIONS.register("order_wait",
@@ -41,6 +44,7 @@ public class InitStands {
             ()->new BreakOrderToSit(new StandEntityAction.Builder()));
     public static final RegistryObject<StandEntityAction> PUT_MINES = ACTIONS.register("put_mines",
             ()->new PutMine(new StandEntityAction.Builder().resolveLevelToUnlock(1)));
+
 
     public static final RegistryObject<StandEntityAction> EXPLODE_MINE = ACTIONS.register("explode_mines",
             ()->new ExplodeMines(new StandEntityAction.Builder().resolveLevelToUnlock(1).shiftVariationOf(PUT_MINES)));
@@ -59,6 +63,12 @@ public class InitStands {
 
     public static final RegistryObject<StandAction> STAYNT_CLOSE = ACTIONS.register("closent",
             ()->new StayntCloseAction(new StandAction.Builder()));
+
+    public static final RegistryObject<StandAction> SUMMONABLE = ACTIONS.register("summon",
+            ()-> new SumonUnitsAction(new StandAction.Builder().resolveLevelToUnlock(2))
+            );
+
+
     public static final EntityStandRegistryObject<BadCompanyStandType<StandStats>, StandEntityType<BadCompanyStandEntity>> STAND_BAD_COMPANY =
             new EntityStandRegistryObject<>("bad_company",
                     STANDS,
@@ -66,6 +76,7 @@ public class InitStands {
                             .color(0x237841)
                             .storyPartName(ModStandsInit.PART_4_NAME)
                             .leftClickHotbar(
+                                    TO_ME.get(),
                                     PUT_MINES.get(),
                                     DONT_SHOOT.get(),
                                     SET_TARGET.get()
@@ -76,7 +87,8 @@ public class InitStands {
                                     STAY_CLOSE.get(),
                                     ORDER_SIT.get(),
                                     MISSILE_MODE.get(),
-                                    GO_TO_BLOCK.get()
+                                    GO_TO_BLOCK.get(),
+                                    SUMMONABLE.get()
                             )
                             .defaultStats(StandStats.class, new StandStats.Builder()
                                     .tier(4)

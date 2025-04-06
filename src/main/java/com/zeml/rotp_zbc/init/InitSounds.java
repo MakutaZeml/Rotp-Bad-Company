@@ -24,6 +24,8 @@ public class InitSounds {
             ()->new SoundEvent(new ResourceLocation(RotpBadCompanyAddon.MOD_ID,"bc_soldier_step")));
     public static final RegistryObject<SoundEvent> SOLDIER_SHOT =SOUNDS.register("bc_soldier_shoot",
             ()->new SoundEvent(new ResourceLocation(RotpBadCompanyAddon.MOD_ID,"bc_soldier_shoot")));
+    public static final RegistryObject<SoundEvent> SOLDIER_BARRAGE =SOUNDS.register("bc_barrage",
+            ()->new SoundEvent(new ResourceLocation(RotpBadCompanyAddon.MOD_ID,"bc_barrage")));
     public static final RegistryObject<SoundEvent> TANK_SHOT =SOUNDS.register("bc_tank_shoot",
             ()->new SoundEvent(new ResourceLocation(RotpBadCompanyAddon.MOD_ID,"bc_tank_shoot")));
     public static final RegistryObject<SoundEvent> TANK_HURT =SOUNDS.register("bc_tank_hurt",

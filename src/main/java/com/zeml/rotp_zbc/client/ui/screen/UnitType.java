@@ -39,7 +39,6 @@ public enum UnitType {
     public static UnitType getByUnitType(int unitType){
         List<UnitType> types = Arrays.stream(values()).filter(type -> type.getUnitType() == unitType).collect(Collectors.toList());
         Optional<UnitType> matchType = types.stream().findFirst();
-        System.out.println(types.stream().count());
         return matchType.orElse(null);
     }
 
