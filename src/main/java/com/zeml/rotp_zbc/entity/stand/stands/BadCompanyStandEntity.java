@@ -7,6 +7,8 @@ import com.github.standobyte.jojo.entity.stand.StandEntityType;
 
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.github.standobyte.jojo.util.mod.JojoModUtil;
+import com.zeml.rotp_zbc.capability.entity.LivingDataProvider;
 import com.zeml.rotp_zbc.entity.BadCompanyUnitEntity;
 import com.zeml.rotp_zbc.entity.BadSoldierEntity;
 import net.minecraft.potion.EffectInstance;
@@ -27,6 +29,13 @@ public class BadCompanyStandEntity extends StandEntity {
         super.tick();
         if(!level.isClientSide){
             this.addEffect(new EffectInstance(ModStatusEffects.FULL_INVISIBILITY.get(),10,10,false,false,false));
+            if(this.getUser() != null){
+                this.getUser().getCapability(LivingDataProvider.CAPABILITY).ifPresent(data ->{
+                    if(data.isExplosiveMissiles() && !JojoModUtil.breakingBlocksEnabled(this.level)){
+                        data.setExplosiveMissiles(false);
+                    }
+                });
+            }
         }
     }
 

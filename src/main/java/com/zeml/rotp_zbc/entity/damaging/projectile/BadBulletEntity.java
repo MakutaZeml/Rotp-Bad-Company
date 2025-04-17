@@ -97,6 +97,10 @@ public class BadBulletEntity extends BadProjectile {
         }
     }
 
+    @Override
+    protected float knockbackMultiplier() {
+        return 0.2F;
+    }
 
     @Override
     public int ticksLifespan() {

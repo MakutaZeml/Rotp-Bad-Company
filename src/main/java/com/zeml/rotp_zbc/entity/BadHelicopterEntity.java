@@ -138,6 +138,9 @@ public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlying
                 bulletEntity.setStandOwner(this.getOwner());
                 System.out.println(this.getOwner());
                 IStandPower.getStandPowerOptional(this.getOwner()).ifPresent(power -> {
+                    if(((StandEntity) power.getStandManifestation()).getStandSkin().isPresent()){
+                        bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
+                    }
                     bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
                 });
             }

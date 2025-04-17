@@ -136,6 +136,9 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
             if(this.getOwner()!=null){
                 bulletEntity.setStandOwner(this.getOwner());
                 IStandPower.getStandPowerOptional(this.getOwner()).ifPresent(power -> {
+                    if(((StandEntity) power.getStandManifestation()).getStandSkin().isPresent()){
+                        bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
+                    }
                     bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
                 });
             }

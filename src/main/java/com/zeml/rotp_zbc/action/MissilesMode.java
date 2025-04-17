@@ -1,9 +1,12 @@
 package com.zeml.rotp_zbc.action;
 
+import com.github.standobyte.jojo.JojoModConfig;
+import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zbc.RotpBadCompanyAddon;
 import com.zeml.rotp_zbc.capability.entity.LivingData;
 import com.zeml.rotp_zbc.capability.entity.LivingDataProvider;
@@ -21,6 +24,15 @@ public class MissilesMode extends StandAction {
 
     public MissilesMode(StandAction.Builder builder){
         super(builder);
+    }
+
+
+    @Override
+    protected ActionConditionResult checkSpecificConditions(LivingEntity user, IStandPower power, ActionTarget target) {
+        if(JojoModUtil.breakingBlocksEnabled(user.level)){
+            return super.checkSpecificConditions(user, power, target);
+        }
+        return ActionConditionResult.NEGATIVE;
     }
 
     @Override
@@ -50,5 +62,11 @@ public class MissilesMode extends StandAction {
                 .getStandSkin(power.getStandInstance().get()), EXPLOSION);
     }
 
-
+    @Override
+    public boolean isUnlocked(IStandPower power) {
+        if(JojoModUtil.breakingBlocksEnabled(power.getUser().level)){
+            return super.isUnlocked(power);
+        }
+        return false;
+    }
 }
