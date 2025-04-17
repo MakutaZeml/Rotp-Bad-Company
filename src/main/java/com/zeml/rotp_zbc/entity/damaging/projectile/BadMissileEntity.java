@@ -64,7 +64,7 @@ public class BadMissileEntity extends BadProjectile {
                 MODE = livingDataOptional.map(LivingData::isExplosiveMissiles).orElse(true)? Explosion.Mode.BREAK: Explosion.Mode.NONE;
             }
 
-            level.explode(source,this.getX(),this.getY(),this.getZ(),2, MODE);
+            level.explode(source,this.getX(),this.getY(),this.getZ(),1.75F, MODE);
             this.remove();
         }
     }
