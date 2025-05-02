@@ -14,7 +14,8 @@
   "stand.rotp_zbc.bad_company": "Bad Company",
 
   "item.rotp_zbc.bad_gun": "Bad Rifle",
-  
+
+  "action.rotp_zbc.to_me": "Shoot them",
   "action.rotp_zbc.order_wait": "Order to %s units to wait and shoot ",
   "action.rotp_zbc.order_no_wait": "Order to %s units to stop waiting ",
   "action.rotp_zbc.units": "Select unit type",

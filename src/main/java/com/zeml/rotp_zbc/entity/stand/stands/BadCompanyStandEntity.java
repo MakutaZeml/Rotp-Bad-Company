@@ -28,13 +28,16 @@ public class BadCompanyStandEntity extends StandEntity {
     public void tick() {
         super.tick();
         if(!level.isClientSide){
-            this.addEffect(new EffectInstance(ModStatusEffects.FULL_INVISIBILITY.get(),10,10,false,false,false));
             if(this.getUser() != null){
                 this.getUser().getCapability(LivingDataProvider.CAPABILITY).ifPresent(data ->{
                     if(data.isExplosiveMissiles() && !JojoModUtil.breakingBlocksEnabled(this.level)){
                         data.setExplosiveMissiles(false);
                     }
                 });
+            }
+            List<BadCompanyUnitEntity> unitEntityList = MCUtil.entitiesAround(BadCompanyUnitEntity.class,this,this.getMaxRange(),false,unitEntity -> unitEntity.isAlliedTo(this) &&unitEntity.isAlive());
+            if(!unitEntityList.isEmpty()){
+                unitEntityList.forEach(unitEntity -> unitEntity.setStandSkin(this.getStandSkin()));
             }
         }
     }
@@ -56,6 +59,11 @@ public class BadCompanyStandEntity extends StandEntity {
 
     public StandRelativeOffset getDefaultOffsetFromUser() {return offsetDefault;}
 
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        this.addEffect(new EffectInstance(ModStatusEffects.FULL_INVISIBILITY.get(),Integer.MAX_VALUE,Integer.MAX_VALUE,false,false,false));
+    }
 
     @Override
     public boolean isInvulnerableTo(DamageSource damageSrc) {

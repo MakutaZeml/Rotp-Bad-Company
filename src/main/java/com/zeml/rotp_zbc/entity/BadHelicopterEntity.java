@@ -133,17 +133,14 @@ public class BadHelicopterEntity extends BadCompanyUnitEntity implements IFlying
             double dz = target.getZ() - this.getZ();
             bulletEntity.shoot(dx, dy, dz, 1.6F, 0.02F);
             this.playSound(InitSounds.SOLDIER_SHOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            this.level.addFreshEntity(bulletEntity);
+            if(this.entityData.get(DATA_PARAM_STAND_SKIN).isPresent()){
+                bulletEntity.withStandSkin(this.entityData.get(DATA_PARAM_STAND_SKIN));
+            }
             if(this.getOwner()!=null){
                 bulletEntity.setStandOwner(this.getOwner());
-                System.out.println(this.getOwner());
-                IStandPower.getStandPowerOptional(this.getOwner()).ifPresent(power -> {
-                    if(((StandEntity) power.getStandManifestation()).getStandSkin().isPresent()){
-                        bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
-                    }
-                    bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
-                });
             }
+            this.level.addFreshEntity(bulletEntity);
+
             if(entityData.get(MISSILES)>0 && Math.random() <.2){
                 if(this.getOwner() != null){
                     if(target.distanceTo(this.getOwner())>6){

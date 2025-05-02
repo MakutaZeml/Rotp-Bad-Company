@@ -12,7 +12,8 @@
   "stand.rotp_zbc.bad_company": "Bad Company",
 
   "item.rotp_zbc.bad_gun": "Rifle Malo",
-  
+
+  "action.rotp_zbc.to_me": "Disparar",
   "action.rotp_zbc.order_wait": "Ordenar a %s unidades que esperen y disparen",
   "action.rotp_zbc.order_no_wait": "Ordenar a %s unidades que dejen de esperar",
   "action.rotp_zbc.units": "Seleccionar tipo de unidad",

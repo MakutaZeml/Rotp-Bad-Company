@@ -2,6 +2,7 @@ package com.zeml.rotp_zbc.entity;
 
 import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
+import com.github.standobyte.jojo.init.ModDataSerializers;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.StandUtil;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
@@ -24,9 +25,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
@@ -35,12 +38,16 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public abstract class BadCompanyUnitEntity extends TameableEntity implements IRangedAttackMob {
     private static final DataParameter<Boolean> STAY_CLOSE = EntityDataManager.defineId(BadCompanyUnitEntity.class,DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SHOOT = EntityDataManager.defineId(BadCompanyUnitEntity.class,DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SEARCH_PLAYER = EntityDataManager.defineId(BadCompanyUnitEntity.class,DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> GOINGTO = EntityDataManager.defineId(BadCompanyUnitEntity.class,DataSerializers.BOOLEAN);
     private static final DataParameter<BlockPos> POSITION = EntityDataManager.defineId(BadCompanyUnitEntity.class,DataSerializers.BLOCK_POS);
+    public static final DataParameter<Optional<ResourceLocation>> DATA_PARAM_STAND_SKIN = EntityDataManager.defineId(BadCompanyUnitEntity.class,
+            (IDataSerializer<Optional<ResourceLocation>>) ModDataSerializers.OPTIONAL_RES_LOC.get().getSerializer());
     protected BadCompanyUnitEntity(EntityType<? extends TameableEntity> p_i48574_1_, World p_i48574_2_) {
         super(p_i48574_1_, p_i48574_2_);
     }
@@ -65,6 +72,7 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
         this.entityData.define(SHOOT,true);
         this.entityData.define(SEARCH_PLAYER,false);
         this.entityData.define(GOINGTO, false);
+        this.entityData.define(DATA_PARAM_STAND_SKIN, Optional.empty());
     }
 
 
@@ -274,6 +282,7 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
     }
 
 
-
-
+    public void setStandSkin(Optional<ResourceLocation> standSkin) {
+        this.entityData.set(DATA_PARAM_STAND_SKIN, standSkin);
+    }
 }

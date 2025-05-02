@@ -133,14 +133,8 @@ public class BadSoldierEntity extends BadCompanyUnitEntity {
             double dz = target.getZ() - this.getZ();
             BadBulletEntity bulletEntity = new BadBulletEntity(this, this.level);
             bulletEntity.shoot(dx, dy, dz, 1.6F, 0.02F);
-            if(this.getOwner()!=null){
-                bulletEntity.setStandOwner(this.getOwner());
-                IStandPower.getStandPowerOptional(this.getOwner()).ifPresent(power -> {
-                    if(((StandEntity) power.getStandManifestation()).getStandSkin().isPresent()){
-                        bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
-                    }
-                    bulletEntity.withStandSkin(((StandEntity)power.getStandManifestation()).getStandSkin());
-                });
+            if(entityData.get(DATA_PARAM_STAND_SKIN).isPresent()){
+                bulletEntity.withStandSkin(entityData.get(DATA_PARAM_STAND_SKIN));
             }
             this.playSound(InitSounds.SOLDIER_SHOT.get(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             this.level.addFreshEntity(bulletEntity);
