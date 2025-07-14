@@ -199,7 +199,6 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
         if (canTakeDamageFrom(damageSrc)) {
             return isInvulnerable();
         }
-
         return true;
     }
 
@@ -210,6 +209,7 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
                 || damageSrc.getMsgId().contains("stand")
                 || damageSrc == DamageSource.ON_FIRE;
     }
+
 
 
 
@@ -280,6 +280,7 @@ public abstract class BadCompanyUnitEntity extends TameableEntity implements IRa
         }
         return super.isAlliedTo(entity);
     }
+
 
 
     public void setStandSkin(Optional<ResourceLocation> standSkin) {
